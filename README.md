@@ -7,3 +7,4 @@ Tech Stack:
 - MongoDB
 - Express
 - Node.js
+- EJS

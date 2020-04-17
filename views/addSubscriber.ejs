@@ -1,0 +1,18 @@
+<%- include('./includes/head.ejs') %>
+</head>
+<body>
+    <%- include('./includes/nav.ejs') %>
+    <main>
+        <div class="container" style="margin-top: 50px;">
+            <h2>Add subscriber below.</h2>
+            <form action="/subscriber/add" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="inputName"><br>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="inputEmail"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </main>
+</body>
+</html>

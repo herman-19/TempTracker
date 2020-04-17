@@ -1,10 +1,14 @@
 const router = require("express").Router();
 
-const Subscriber = require("../models/subcriber");
+const SubController = require("../controllers/subscriber");
 
-router.get("/", (req, res, next) => {
-  console.log("Subscriber page GET request.");
-  res.send("<h1>cool</h1>");
-});
+// "/subscriber/add"" => GET
+router.get("/add", SubController.getAddSubscriber);
+
+// "/subscriber/edit"" => GET
+router.get("/edit", SubController.getEditSubscribers);
+
+// "/subscriber/add"" => POST
+router.post("/add", SubController.postAddSubscriber);
 
 module.exports = router;

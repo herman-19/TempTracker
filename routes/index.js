@@ -1,8 +1,8 @@
 const router = require("express").Router();
 
-const SDController = require("../controllers/sensorData");
+const IndexController = require("../controllers/index");
 
 // "/"" => GET
-router.get("/", SDController.getSensorData);
+router.get("/", IndexController.getIndex);
 
 module.exports = router;

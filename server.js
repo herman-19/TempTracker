@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -25,12 +27,12 @@ connection.once("open", () => {
 });
 
 // EJS Template Engine
-app.set("views engine", "ejs");
+app.set("view engine", "ejs");
 app.set("views", "views");
 
 // Body parsing middleware.
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes.
 app.use("/sensorData", sensorDataRoutes);
@@ -39,9 +41,10 @@ app.use(indexRoutes);
 
 // Catch all.
 app.use((req, res, next) => {
-  res.send(
-    "<html><body><header><h3>404 - Page Not Found.</h3></header></body></html>"
-  );
+  res.render('404', {
+      pageTitle: "Page Not Found",
+      path: "unknown"
+  })
 });
 
 app.listen(port, () => {

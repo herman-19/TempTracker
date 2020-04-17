@@ -9,13 +9,11 @@ async function storeDocument(document) {
   }
 }
 
-module.exports.postSensorData = async (req, res, next) => {
+exports.postSensorData = async (req, res, next) => {
   try {
     const doc = {
-      data: {
-        temperature: parseInt(req.body.temp),
-        humidity: parseInt(req.body.humidity),
-      },
+      temperature: parseInt(req.body.temp),
+      humidity: parseInt(req.body.humidity),
     };
     await storeDocument(doc);
     console.log("new sensor data stored.");
@@ -25,7 +23,7 @@ module.exports.postSensorData = async (req, res, next) => {
   }
 };
 
-module.exports.getSensorData = async (req, res, next) => {
+exports.getSensorData = async (req, res, next) => {
   try {
     const documents = await SDModel.find();
     res.json(documents);
