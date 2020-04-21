@@ -1,20 +1,20 @@
 <header class="main-header">
-  <nav class="navbar navbar-inverse navbar-fixed-top navbar-custom">
+  <nav class="navbar navbar-fixed-top navbar-custom">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navTarget">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" style="color:white"  href="/">TempTracker</a>
+        <a class="navbar-brand" href="/">TempTracker</a>
       </div>
       <div class="collapse navbar-collapse" id="navTarget">
         <ul class="nav navbar-nav">
-          <li class="<%= path === '/subscriber/add' ? 'active' : '' %>">
-            <a  style="color:white" href="/subscriber/add">Add Subscriber</a>
+          <li class="navbar-item">
+            <a class="<%= path === '/subscriber/add' ? 'active' : '' %>" href="/subscriber/add">Add Subscriber</a>
           </li>
-          <li class="<%= path === '/subscriber/edit' ? 'active' : '' %>">
-            <a style="color:white"  href="/subscriber/edit">Edit Subscribers</a>
+          <li class="navbar-item">
+            <a class="<%= path === '/subscriber/edit' ? 'active' : '' %>" href="/subscriber/edit">Edit Subscribers</a>
           </li>
         </ul>
       </div>

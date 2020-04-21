@@ -1,3 +1,48 @@
+body {
+  background-color: rgb(96, 102, 110);
+  color: rgb(56, 56, 56);
+}
+
 .navbar-custom {
-    background-color:#c0362c;
+  background-color: rgb(124, 181, 236);
+}
+
+.navbar-toggle {
+  border: none;
+  background: transparent !important;
+}
+
+.icon-bar {
+  margin: 2.5px;
+}
+
+.row div {
+  text-align: center;
+}
+
+.navbar-brand {
+  color: rgb(56, 56, 56);
+}
+
+.navbar-item a {
+  color: rgb(56, 56, 56);
+}
+
+.navbar-item a.active {
+  color: white;
+}
+
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: transparent !important;
+}
+
+.nav > li > a:hover {
+  color: white;
+  text-decoration: none;
+  background-color: transparent !important;
+}
+
+#chart-container {
+  margin-top: 20px;
 }
