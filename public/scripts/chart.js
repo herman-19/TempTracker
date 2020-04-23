@@ -1,14 +1,6 @@
 const MAX_POINTS_DISPLAYED = 10;
 
-let tData = [];
-let hData = [];
 let myChart;
-
-// Populate arrays with random data.
-for (let i = 0; i < 10; i++) {
-  tData.push(Math.random() * 100);
-  hData.push(Math.random() * 100);
-}
 
 Highcharts.setOptions({
   chart: {
@@ -19,7 +11,13 @@ Highcharts.setOptions({
   },
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const url = "http://localhost:3000/sensorData/latestData";
+  const response = await fetch(url);
+  const jres = await response.json();
+  console.log(jres.tArray);
+  console.log(jres.hArray);
+  console.log(jres.timestamps);
   myChart = Highcharts.chart("chart-container", {
     chart: {
       type: "line",
@@ -31,18 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     },
     xAxis: {
-      categories: [
-        "12:15pm",
-        "12:30pm",
-        "12:45pm",
-        "1:00pm",
-        "1:15pm",
-        "1:30pm",
-        "1:45pm",
-        "2:00pm",
-        "2:15pm",
-        "2:30pm",
-      ],
+      categories: [...jres.timestamps],
       labels: {
         style: {
           color: "rgb(181, 183, 186)",
@@ -65,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     series: [
       {
         name: "Temperature ( °F )",
-        data: tData,
+        data: [...jres.tArray],
         dataLabels: {
           style: {
             color: "white",
@@ -74,11 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         name: "Relative Humidity (%)",
-        data: hData,
+        data: [...jres.hArray],
         color: "rgb(201, 125, 125)",
       },
     ],
   });
+
+  setInterval(pollServer, 5000); // 15 mins = 900000 ms
 });
 
 document.getElementById("btn").addEventListener("click", () => {
@@ -91,5 +80,11 @@ document.getElementById("btn").addEventListener("click", () => {
   // Set extremes to go from min (current index - 10) to last point (current index)
   myChart.xAxis[0].setExtremes(
     lastPointT - (MAX_POINTS_DISPLAYED - 1), // min
-    lastPointT); // max
+    lastPointT
+  ); // max
 });
+
+const pollServer = () => {
+  // Poll.
+  console.log("polling...");
+};

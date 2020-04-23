@@ -26,7 +26,20 @@ exports.postSensorData = async (req, res, next) => {
 exports.getSensorData = async (req, res, next) => {
   try {
     const documents = await SDModel.find();
-    res.json(documents);
+    
+    const data = {
+      tArray: [],
+      hArray: [],
+      timestamps: [],
+    };
+
+    for (record of documents) {
+      data.tArray.push(record.temperature);
+      data.hArray.push(record.humidity);
+      data.timestamps.push(record.createdAt);
+    }
+
+    res.json(data);
   } catch (err) {
     res.status(400).res.json("Error " + err);
   }
