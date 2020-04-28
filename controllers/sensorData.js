@@ -1,5 +1,6 @@
 const SDModel = require("../models/sensorData");
 
+// Helper function to store data to database.
 async function storeDocument(document) {
   try {
     const newSensorData = new SDModel(document);
@@ -9,6 +10,7 @@ async function storeDocument(document) {
   }
 }
 
+// Construct document of sensor data and store in the database.
 exports.postSensorData = async (req, res, next) => {
   try {
     const doc = {
@@ -23,20 +25,29 @@ exports.postSensorData = async (req, res, next) => {
   }
 };
 
+// Get the latest 10 sensor data points sorted from least to most recent.
 exports.getSensorData = async (req, res, next) => {
   try {
-    const documents = await SDModel.find();
-    
+    let documents = await SDModel.find().sort({ _id: -1 }).limit(10);
+    documents.reverse();
+
     const data = {
       tArray: [],
       hArray: [],
       timestamps: [],
+      ids: [],
     };
 
-    for (record of documents) {
+    for (const record of documents) {
       data.tArray.push(record.temperature);
       data.hArray.push(record.humidity);
-      data.timestamps.push(record.createdAt);
+      data.timestamps.push(
+        new Date(record.createdAt).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
+      data.ids.push(record._id);
     }
 
     res.json(data);

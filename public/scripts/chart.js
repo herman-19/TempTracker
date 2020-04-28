@@ -1,6 +1,8 @@
 const MAX_POINTS_DISPLAYED = 10;
 
 let myChart;
+let identifierSet = new Set();
+let chartTimestamps = [];
 
 Highcharts.setOptions({
   chart: {
@@ -12,79 +14,107 @@ Highcharts.setOptions({
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const url = "http://localhost:3000/sensorData/latestData";
-  const response = await fetch(url);
-  const jres = await response.json();
-  console.log(jres.tArray);
-  console.log(jres.hArray);
-  console.log(jres.timestamps);
-  myChart = Highcharts.chart("chart-container", {
-    chart: {
-      type: "line",
-    },
-    title: {
-      text: "Temperature Over Time",
-      style: {
-        color: "rgb(181, 183, 186)",
+  try {
+    const sensorData = await pollServer();
+    chartTimestamps = [...sensorData.timestamps];
+
+    for (const uid of sensorData.ids) {
+      identifierSet.add(uid);
+    }
+
+    myChart = Highcharts.chart("chart-container", {
+      chart: {
+        type: "line",
       },
-    },
-    xAxis: {
-      categories: [...jres.timestamps],
-      labels: {
-        style: {
-          color: "rgb(181, 183, 186)",
-        },
-      },
-    },
-    yAxis: {
       title: {
-        text: "Reported Data",
+        text: "Temperature Over Time",
         style: {
           color: "rgb(181, 183, 186)",
         },
       },
-      labels: {
-        style: {
-          color: "rgb(181, 183, 186)",
-        },
-      },
-    },
-    series: [
-      {
-        name: "Temperature ( °F )",
-        data: [...jres.tArray],
-        dataLabels: {
+      xAxis: {
+        categories: chartTimestamps,
+        labels: {
           style: {
-            color: "white",
+            color: "rgb(181, 183, 186)",
           },
         },
       },
-      {
-        name: "Relative Humidity (%)",
-        data: [...jres.hArray],
-        color: "rgb(201, 125, 125)",
+      yAxis: {
+        title: {
+          text: "Reported Data",
+          style: {
+            color: "rgb(181, 183, 186)",
+          },
+        },
+        labels: {
+          style: {
+            color: "rgb(181, 183, 186)",
+          },
+        },
       },
-    ],
-  });
+      series: [
+        {
+          name: "Temperature ( °F )",
+          data: [...sensorData.tArray],
+          dataLabels: {
+            style: {
+              color: "white",
+            },
+          },
+        },
+        {
+          name: "Relative Humidity (%)",
+          data: [...sensorData.hArray],
+          color: "rgb(201, 125, 125)",
+        },
+      ],
+    });
 
-  setInterval(pollServer, 5000); // 15 mins = 900000 ms
+    setInterval(updateChart, 900000); // 15 mins = 900000 ms
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-document.getElementById("btn").addEventListener("click", () => {
-  myChart.series[0].addPoint(Math.random() * 100);
-  myChart.series[1].addPoint(Math.random() * 100);
+const pollServer = async () => {
+  try {
+    // Poll server for latest data.
+    console.log("Fetching latest data...");
+    const url = "http://localhost:3000/sensorData/latestData";
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log("Error polling server:", err);
+  }
+};
 
-  // Get indices of last points
-  var lastPointT = myChart.series[0].data.length - 1;
+const updateChart = async () => {
+  try {
+    const data = await pollServer();
 
-  // Set extremes to go from min (current index - 10) to last point (current index)
-  myChart.xAxis[0].setExtremes(
-    lastPointT - (MAX_POINTS_DISPLAYED - 1), // min
-    lastPointT
-  ); // max
-});
+    let i = 0;
+    for (let newId of data.ids) {
+      if (identifierSet.has(newId) == false) {
+        // Add point to chart.
+        identifierSet.add(newId);
+        myChart.series[0].addPoint(data.tArray[i]); // temp
+        myChart.series[1].addPoint(data.hArray[i]); // humidity
+        myChart.xAxis.categories = chartTimestamps.push(data.timestamps[i]); // timestamp
 
-const pollServer = () => {
-  // Poll.
-  console.log("polling...");
+        // Get indices of last points.
+        const lastPointT = myChart.series[0].data.length - 1;
+
+        // Set extremes to go from min (current index - 10) to last point (current index)
+        myChart.xAxis[0].setExtremes(
+          lastPointT - (MAX_POINTS_DISPLAYED - 1),
+          lastPointT
+        );
+      }
+      i++;
+    }
+  } catch (err) {
+    console.log("Error updating chart: ", err);
+  }
 };

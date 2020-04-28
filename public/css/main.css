@@ -1,10 +1,16 @@
 body {
   background-color: rgb(96, 102, 110);
-  color: rgb(56, 56, 56);
 }
 
 .navbar-custom {
   background-color: rgb(124, 181, 236);
+  border: none;
+}
+
+.navbar-custom div.navbar-collapse
+{
+    border-top:none;
+    box-shadow:none;
 }
 
 .navbar-toggle {
@@ -12,35 +18,27 @@ body {
   background: transparent !important;
 }
 
-.icon-bar {
+.main-header .navbar .icon-bar {
   margin: 2.5px;
+  background-color: rgb(56, 56, 56);
 }
 
 .row div {
   text-align: center;
 }
 
-.navbar-brand {
-  color: rgb(56, 56, 56);
-}
-
-.navbar-item a {
-  color: rgb(56, 56, 56);
-}
-
-.navbar-item a.active {
+.main-header .navbar .nav > li > a.active {
   color: white;
 }
 
-.nav > li > a:focus {
+.main-header .navbar .nav > li > a:hover {
+  color: white;
   text-decoration: none;
   background-color: transparent !important;
 }
 
-.nav > li > a:hover {
-  color: white;
-  text-decoration: none;
-  background-color: transparent !important;
+.main-header .navbar .container-fluid a {
+  color: rgb(56, 56, 56);
 }
 
 #chart-container {
