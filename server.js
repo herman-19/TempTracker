@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -32,6 +32,11 @@ app.set("views", "views");
 
 // Body parsing middleware.
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  express.json({
+    type: ["application/json", "text/plain"],
+  })
+);
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes.
@@ -41,10 +46,10 @@ app.use(indexRoutes);
 
 // Catch all.
 app.use((req, res, next) => {
-  res.render('404', {
-      pageTitle: "Page Not Found",
-      path: "unknown"
-  })
+  res.render("404", {
+    pageTitle: "Page Not Found",
+    path: "unknown",
+  });
 });
 
 app.listen(port, () => {

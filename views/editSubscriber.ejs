@@ -3,28 +3,31 @@
 <body>
     <%- include('./includes/nav.ejs') %>
     <main>
-        <div class="container" style="margin-top: 50px;">
-            <h2>Edit subscriber below.</h2>
-            <table style="width:100%">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                </tr>
-                <% if (subscribers.length > 0) { %> 
-                    <% for (let sub of subscribers) { %>
-                        <tr>
-                            <td><%= sub.name %></td>
-                            <td><%= sub.email %></td>
-                            <td>
-                                <a href="">Delete</a>
-                                |
-                                <a href="">Update</a>
-                            </td>
-                        </tr>
+        <div class="container sub-container" style="margin-top: 80px;">
+            <div class="box edit-sub">
+                <h3>Edit Subscriber Below</h3>
+                <table style="width:100%">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                    <% if (subscribers.length > 0) { %> 
+                        <% for (let sub of subscribers) { %>
+                            <tr>
+                                <td><%= sub.name %></td>
+                                <td><%= sub.email %></td>
+                                <td>
+                                    <a href="/subscriber/edit" onclick="fetch('http://localhost:3000/subscriber/delete/<%= sub._id %>', { method: 'DELETE'}).then(res => res.json).then(data => console.log('Success'))">Delete</a>
+                                    |
+                                    <a href="/subscriber/edit" onclick="fetch('http://localhost:3000/subscriber/update/<%= sub._id %>', { method: 'POST', body: JSON.stringify({ inputName: 'tempName', inputEmail: 'temp@domain.com'})}).then(res => res.json).then(data => console.log('Success'))">Update</a>
+                                </td>
+                            </tr>
+                        <% } %>
                     <% } %>
-                <% } %>
-            </table>
+                </table>
+
+            </div>
         </div>
     </main>
 </body>

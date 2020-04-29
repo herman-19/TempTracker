@@ -7,10 +7,9 @@ body {
   border: none;
 }
 
-.navbar-custom div.navbar-collapse
-{
-    border-top:none;
-    box-shadow:none;
+.navbar-custom div.navbar-collapse {
+  border-top: none;
+  box-shadow: none;
 }
 
 .navbar-toggle {
@@ -43,4 +42,45 @@ body {
 
 #chart-container {
   margin-top: 20px;
+}
+
+.sub-container {
+  display: flex;
+  justify-content: center;
+}
+
+.sub-container h3 {
+  margin: 0em;
+  text-decoration: underline;
+}
+
+.box {
+  background-color: snow;
+  border-radius: 1em;
+  padding: 1em 2.5em; 
+}
+
+.box input {
+  margin-bottom: 0em;
+}
+
+.box button {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+.edit-sub {
+  min-width: 80%;
+}
+
+.add-sub {
+  min-width: 50%;
+}
+
+table {
+  margin: 1em 0em;
+}
+
+th {
+  text-decoration: underline;
 }

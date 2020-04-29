@@ -3,15 +3,21 @@
 <body>
     <%- include('./includes/nav.ejs') %>
     <main>
-        <div class="container" style="margin-top: 50px;">
-            <h2>Add subscriber below.</h2>
-            <form action="/subscriber/add" method="POST">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="inputName"><br>
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="inputEmail"><br><br>
-                <input type="submit" value="Submit">
-            </form>
+        <div class="container sub-container" style="margin-top: 80px;">
+            <div class="box add-sub">
+                <h3>Add Subscriber</h3><br>
+                <form action="/subscriber/add" method="POST" id="formAddSub">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="inputName">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="inputEmail">
+                    </div>
+                </form>
+                <button type="submit" class="btn btn-primary" form="formAddSub">Submit</button>
+            </div>
         </div>
     </main>
 </body>

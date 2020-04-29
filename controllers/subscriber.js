@@ -35,3 +35,25 @@ exports.postAddSubscriber = async (req, res, next) => {
     res.status(400).json("Error: " + err);
   }
 };
+
+exports.updateSubscriber = async (req, res, next) => {
+  try {
+    const sub = await Subscriber.findById(req.params.id);
+    sub.name = req.body.inputName;
+    sub.email = req.body.inputEmail;
+    
+    await sub.save();
+    res.json('Subscriber updated!');
+  } catch (err) {
+    res.status(400).json("Error: " + err);
+  }
+};
+
+exports.deleteSubscriber = async (req, res, next) => {
+  try {
+    await Subscriber.findByIdAndDelete(req.params.id);
+    res.json('Subscriber deleted.');
+  } catch (err) {
+    res.status(400).json("Error: " + err);
+  }
+};
