@@ -69,6 +69,11 @@ body {
   margin-bottom: 0.5em;
 }
 
+.box button a{
+  color: white;
+  text-decoration: none;
+}
+
 .edit-sub {
   min-width: 80%;
 }
@@ -83,4 +88,9 @@ table {
 
 th {
   text-decoration: underline;
+  text-align: center;
+}
+
+td {
+  text-align: center;
 }

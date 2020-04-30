@@ -5,24 +5,27 @@
     <main>
         <div class="container sub-container" style="margin-top: 80px;">
             <div class="box add-sub">
-                <h3>Add Subscriber</h3><br>
-                <form action="/subscriber/add" method="POST" id="formAddSub">
+                <h3>Update Subscriber Info</h3><br>
+                <form action="/subscriber/update" method="POST" id="formAddSub">
+                    <!-- Note: html form does not support http PUT method. -->
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" name="inputName">
+                        <input type="text" class="form-control" id="name" name="inputName" value="<%= sub.name %>">
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="inputEmail">
+                        <input type="email" class="form-control" id="email" name="inputEmail" value="<%= sub.email %>">
                     </div>
                     <div class="form-group">
                         <label for="temp-limit">Max temperature (°F):</label>
                         <p>(Receive a notification when temperature exceeds this value)</p>
                         <input type="number" class="form-control" id="temp-limit" name="inputLimit"
-                        placeholder="Enter temperature in degrees fahrenheit.">
+                        value="<%= sub.tempLimit %>">
+                        <input id="subId" name="inputSubId" type="hidden" value="<%= sub._id %>">
                     </div>
                 </form>
-                <button type="submit" class="btn btn-primary" form="formAddSub">Submit</button>
+                <button type="submit" class="btn btn-primary" form="formAddSub">Update</button>
+                <a href="/subscriber/edit"><button class="btn btn-primary">Cancel</button></a>
             </div>
         </div>
     </main>

@@ -20,12 +20,25 @@ exports.getEditSubscribers = async (req, res, next) => {
   }
 };
 
+exports.getEditSingleSubscriber = async (req, res, next) => {
+  try {
+    const sub = await Subscriber.findById(req.params.id);
+    res.render("updateSubscriber", {
+      pageTitle: "Edit Subscribers",
+      sub: sub,
+      path: "/subscriber/edit"
+    });
+  } catch (err) {
+    res.status(400).json("Error: " + err);
+  }
+};
+
 exports.postAddSubscriber = async (req, res, next) => {
   try {
-    console.log(req.body);
     const newSub = new Subscriber({
       name: req.body.inputName,
       email: req.body.inputEmail,
+      tempLimit: req.body.inputLimit
     });
 
     await newSub.save();
@@ -38,12 +51,13 @@ exports.postAddSubscriber = async (req, res, next) => {
 
 exports.updateSubscriber = async (req, res, next) => {
   try {
-    const sub = await Subscriber.findById(req.params.id);
+    const sub = await Subscriber.findById(req.body.inputSubId);
     sub.name = req.body.inputName;
     sub.email = req.body.inputEmail;
+    sub.tempLimit = req.body.inputLimit;
     
     await sub.save();
-    res.json('Subscriber updated!');
+    res.redirect('/subscriber/edit');
   } catch (err) {
     res.status(400).json("Error: " + err);
   }
