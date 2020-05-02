@@ -5,15 +5,15 @@
     <main>
         <div class="container sub-container" style="margin-top: 80px;">
             <div class="box edit-sub">
-                <h3>Edit Subscriber Below</h3>
-                <table style="width:100%">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Limit</th>
-                        <th>Action</th>
-                    </tr>
-                    <% if (subscribers.length > 0) { %> 
+                <% if (subscribers.length > 0) { %>
+                    <h3>Edit Subscriber Below</h3>
+                    <table style="width:100%">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Limit</th>
+                            <th>Action</th>
+                        </tr>
                         <% for (let sub of subscribers) { %>
                             <tr>
                                 <td><%= sub.name %></td>
@@ -31,9 +31,10 @@
                                 </td>
                             </tr>
                         <% } %>
-                    <% } %>
-                </table>
-
+                    </table>
+                <% } else { %>
+                    <h4>No subscribers.</h4>
+                <% } %>
             </div>
         </div>
     </main>
