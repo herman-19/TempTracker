@@ -1,9 +1,9 @@
 body {
-  background-color: rgb(96, 102, 110);
+  background-color: cornflowerblue;
 }
 
 .navbar-custom {
-  background-color: rgb(124, 181, 236);
+  background-color: rgb(199, 113, 110);
   border: none;
 }
 
@@ -55,9 +55,9 @@ body {
 }
 
 .box {
-  background-color: snow;
+  background-color: white;
   border-radius: 1em;
-  padding: 1em 2.5em; 
+  padding: 1em 2.5em;
 }
 
 .box input {
@@ -69,7 +69,7 @@ body {
   margin-bottom: 0.5em;
 }
 
-.box button a{
+.box button a {
   color: white;
   text-decoration: none;
 }

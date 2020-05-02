@@ -8,12 +8,29 @@
         <div class="container" style="margin-top: 50px;">
             <div id="chart-container" style="width:100%; height:400px;"></div>
             <div class="row">
-                <div class="col-xs-12 col-sm-4 col-lg-6">Average.</div>
-                <div class="col-xs-12 col-sm-4 col-lg-3">Last Reported temp.</div>
-                <div class="col-xs-12 col-sm-4 col-lg-3">Num. of Subscribers</div>
+                <div class="col-xs-12 col-sm-6 col-lg-6">
+                    <div class="w3-card w3-margin w3-white">
+                        <div class="w3-container w3-center">
+                            <h3 style="text-decoration: underline;">Temperature</h3>
+                            <h3 id="current-temp">N/A</h3>
+                            <div class="w3-section">
+                                <p id="t-min-max">Min:  | Max: </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-lg-6">
+                    <div class="w3-card w3-margin w3-white">
+                        <div class="w3-container w3-center">
+                            <h3 style="text-decoration: underline;">Humidity</h3>
+                            <h3 id="current-humidity">N/A</h3>
+                            <div class="w3-section">
+                                <p id="h-min-max">Min: | Max: </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <br><br>
-            <p>[List of subscribers]</p>
         </div>
     </main>
 </body>

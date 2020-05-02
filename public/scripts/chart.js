@@ -6,7 +6,7 @@ let chartTimestamps = [];
 
 Highcharts.setOptions({
   chart: {
-    backgroundColor: "rgb(96, 102, 110)",
+    backgroundColor: "cornflowerblue",
     plotBackgroundColor: "rgba(80, 80, 112, .9)",
     plotShadow: true,
     plotBorderWidth: 1,
@@ -27,29 +27,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         type: "line",
       },
       title: {
-        text: "Temperature Over Time",
+        text: "Temperature & Humidity",
         style: {
-          color: "rgb(181, 183, 186)",
+          color: "black",
         },
       },
       xAxis: {
         categories: chartTimestamps,
         labels: {
           style: {
-            color: "rgb(181, 183, 186)",
+            color: "black",
           },
         },
       },
       yAxis: {
         title: {
-          text: "Reported Data",
+          text: "Data",
           style: {
-            color: "rgb(181, 183, 186)",
+            color: "black",
           },
         },
         labels: {
           style: {
-            color: "rgb(181, 183, 186)",
+            color: "black",
           },
         },
       },
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ],
     });
 
-    setInterval(updateChart, 900000); // 15 mins = 900000 ms
+    setInterval(updateChart, 300000); // 5 mins = 300000 ms
   } catch (err) {
     console.log(err);
   }
@@ -84,9 +84,24 @@ const pollServer = async () => {
     const url = "http://localhost:3000/sensorData/latestData";
     const response = await fetch(url);
     const data = await response.json();
+    updateHTML(data.tArray, data.hArray);
     return data;
   } catch (err) {
     console.log("Error polling server:", err);
+  }
+};
+
+const updateHTML = (tData, hData) => {
+  if (tData.length > 0 && hData.length > 0) {
+    const tempEl = document.getElementById("current-temp");
+    const humEl = document.getElementById("current-humidity");
+    const tMinMax = document.getElementById("t-min-max");
+    const hMinMax = document.getElementById("h-min-max");
+  
+    tempEl.innerHTML = `${tData[tData.length - 1]} °F`;
+    humEl.innerHTML = `${hData[hData.length - 1]}% RH`;
+    tMinMax.innerHTML = `Min: ${Math.min(...tData)} °F | Max: ${Math.max(...tData)} °F`;
+    hMinMax.innerHTML = `Min: ${Math.min(...hData)}% RH | Max: ${Math.max(...hData)}% RH`;
   }
 };
 

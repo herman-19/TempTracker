@@ -1,4 +1,7 @@
 const SDModel = require("../models/sensorData");
+const Subscriber = require("../models/subcriber");
+
+const nodemailer = require("nodemailer");
 
 // Helper function to store data to database.
 async function storeDocument(document) {
@@ -10,6 +13,38 @@ async function storeDocument(document) {
   }
 }
 
+// Helper function to send email to subscriber.
+async function sendEmail(subscriberEmail, tempLimit, curTemp) {
+  try {
+    let smtpTransport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "tempTrackerApp@gmail.com",
+        pass: process.env.GMAIL_ACCT_PW,
+      },
+    });
+    let mail = {
+      from: "TempTracker <tempTrackerApp@gmail.com>",
+      to: subscriberEmail,
+      subject: "Notification: Temperature Limit Exceeded",
+      text: `Temperature has exceeded ${tempLimit} °F!\n\nCurrent temperature: ${curTemp} °F`,
+    };
+
+    await smtpTransport.sendMail(mail, (err, info) => {
+      if (err) {
+        throw new Error("Error sending mail");
+      } else {
+        console.log("Emailed %s successfuly.", subscriberEmail);
+      }
+    });
+
+    smtpTransport.close();
+  } catch (err) {
+    console.log(err.message);
+    throw err;
+  }
+}
+
 // Construct document of sensor data and store in the database.
 exports.postSensorData = async (req, res, next) => {
   try {
@@ -18,10 +53,20 @@ exports.postSensorData = async (req, res, next) => {
       humidity: parseInt(req.body.humidity),
     };
     await storeDocument(doc);
-    console.log("new sensor data stored.");
+
+    // Query for subscribers with a limit less than latest temperature.
+    const recipients = await Subscriber.find({
+      tempLimit: { $lt: req.body.temp },
+    });
+
+    for (const rec of recipients) {
+      await sendEmail(rec.email, rec.tempLimit, req.body.temp);
+    }
+
     res.send("[Server]: Data stored!");
   } catch (err) {
-    res.status(400).res.json("Error: " + err);
+    console.log("Something went wrong while sending email.");
+    res.status(400).json("Error: " + err);
   }
 };
 
@@ -52,6 +97,6 @@ exports.getSensorData = async (req, res, next) => {
 
     res.json(data);
   } catch (err) {
-    res.status(400).res.json("Error " + err);
+    res.status(400).json("Error " + err);
   }
 };
